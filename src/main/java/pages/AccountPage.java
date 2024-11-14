@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class AccountPage {
-    private WebDriver driver;
     private WebDriverWait wait;
 
     private By logoutButton = By.xpath(".//button[text()='Выход']");
@@ -17,7 +16,6 @@ public class AccountPage {
     private By logo = By.className("AppHeader_header__logo__2D0X2");
 
     public AccountPage(WebDriver driver) {
-        this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 

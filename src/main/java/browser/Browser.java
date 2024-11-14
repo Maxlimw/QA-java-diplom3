@@ -20,15 +20,15 @@ public class Browser {
     private static WebDriver createChromeDriver() {
         String driverPath = "/opt/homebrew/Caskroom/chromedriver/130.0.6723.116/chromedriver-mac-arm64/chromedriver";
         System.setProperty("webdriver.chrome.driver", driverPath);
-        return new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+        return new ChromeDriver(options);
     }
 
     private static WebDriver createYandexDriver() {
         System.setProperty("webdriver.chrome.driver", "/path/to/yandexdriver");
-
         ChromeOptions options = new ChromeOptions();
         options.setBinary("/Applications/Yandex.app/Contents/MacOS/Yandex");
-
         return new ChromeDriver(options);
     }
 }

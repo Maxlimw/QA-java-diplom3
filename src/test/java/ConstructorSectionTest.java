@@ -1,9 +1,9 @@
 import browser.Browser;
 import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.DisplayName;
 import org.openqa.selenium.WebDriver;
 import pages.MainPage;
 
@@ -11,10 +11,12 @@ import static org.junit.Assert.*;
 
 public class ConstructorSectionTest {
     private WebDriver driver;
+    private MainPage mainPage;
 
     @Before
     public void setUp() {
         driver = Browser.createWebDriver();
+        mainPage = new MainPage(driver);
     }
 
     @After
@@ -29,9 +31,8 @@ public class ConstructorSectionTest {
     @Description("Проверка перехода к разделу 'Соусы' в конструкторе")
     public void switchToSaucesSectionTest() {
         driver.get("https://stellarburgers.nomoreparties.site/");
-        MainPage mainPage = new MainPage(driver);
         mainPage.selectSaucesSection();
-        assertTrue(mainPage.isSaucesSectionActive());
+        assertTrue("Секция 'Соусы' активна", mainPage.isSaucesSectionActive());
     }
 
     @Test
@@ -39,9 +40,8 @@ public class ConstructorSectionTest {
     @Description("Проверка перехода к разделу 'Начинки' в конструкторе")
     public void switchToFillingsSectionTest() {
         driver.get("https://stellarburgers.nomoreparties.site/");
-        MainPage mainPage = new MainPage(driver);
         mainPage.selectFillingsSection();
-        assertTrue(mainPage.isFillingsSectionActive());
+        assertTrue("Секция 'Начинки' активна", mainPage.isFillingsSectionActive());
     }
 
     @Test
@@ -49,9 +49,8 @@ public class ConstructorSectionTest {
     @Description("Проверка перехода к разделу 'Булки' в конструкторе")
     public void switchToBunsSectionTest() {
         driver.get("https://stellarburgers.nomoreparties.site/");
-        MainPage mainPage = new MainPage(driver);
-        mainPage.selectSaucesSection();
+        mainPage.selectFillingsSection();
         mainPage.selectBunsSection();
-        assertTrue(mainPage.isBunsSectionActive());
+        assertTrue("Секция 'Булки' активна", mainPage.isBunsSectionActive());
     }
 }

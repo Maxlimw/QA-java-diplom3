@@ -64,8 +64,4 @@ public class RegistrationPage {
             return false;
         }
     }
-
-    public By getPasswordErrorLocator() {
-        return passwordError;
-    }
 }

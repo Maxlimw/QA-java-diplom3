@@ -1,12 +1,12 @@
 import browser.Browser;
 import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import model.UserData;
 import model.UserCredentials;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.DisplayName;
 import org.openqa.selenium.WebDriver;
 import pages.MainPage;
 import pages.RegistrationPage;
@@ -21,10 +21,12 @@ public class RegistrationTest {
     private UserClient userClient;
     private UserData userData;
     private String accessToken;
+    private MainPage mainPage;
 
     @Before
     public void setUp() {
         driver = Browser.createWebDriver();
+        mainPage = new MainPage(driver);
         userClient = new UserClient();
         String email = UserGenerator.getRandomEmail();
         String password = UserGenerator.getRandomPassword();
@@ -42,12 +44,7 @@ public class RegistrationTest {
         }
     }
 
-    @Test
-    @DisplayName("Успешная регистрация")
-    @Description("Проверка успешной регистрации пользователя с валидными данными")
-    public void successfulRegistrationTest() {
-        driver.get("https://stellarburgers.nomoreparties.site/");
-        MainPage mainPage = new MainPage(driver);
+    private void registerUser() {
         mainPage.clickLoginButton();
         LoginPage loginPage = new LoginPage(driver);
         loginPage.clickRegistrationLink();
@@ -56,6 +53,14 @@ public class RegistrationTest {
         registrationPage.setEmail(userData.getEmail());
         registrationPage.setPassword(userData.getPassword());
         registrationPage.clickRegisterButton();
+    }
+
+    @Test
+    @DisplayName("Успешная регистрация")
+    @Description("Проверка успешной регистрации пользователя с валидными данными")
+    public void successfulRegistrationTest() {
+        driver.get("https://stellarburgers.nomoreparties.site/");
+        registerUser();
         assertTrue(driver.getCurrentUrl().contains("/login"));
         Response loginResponse = userClient.login(new UserCredentials(userData.getEmail(), userData.getPassword()));
         accessToken = loginResponse.then().extract().path("accessToken");
@@ -66,7 +71,6 @@ public class RegistrationTest {
     @Description("Проверка ошибки при регистрации с паролем меньше 6 символов")
     public void registrationWithIncorrectPasswordTest() {
         driver.get("https://stellarburgers.nomoreparties.site/");
-        MainPage mainPage = new MainPage(driver);
         mainPage.clickLoginButton();
         LoginPage loginPage = new LoginPage(driver);
         loginPage.clickRegistrationLink();
@@ -77,5 +81,4 @@ public class RegistrationTest {
         registrationPage.clickRegisterButton();
         assertTrue(registrationPage.isPasswordErrorVisible());
     }
-
 }

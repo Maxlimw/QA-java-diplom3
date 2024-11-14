@@ -9,21 +9,21 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class MainPage {
-    private WebDriver driver;
     private WebDriverWait wait;
+    private WebDriver webDriver;
+
+    public MainPage(WebDriver webDriver) {
+        this.webDriver = webDriver;
+        this.wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+    }
 
     private By loginButton = By.xpath(".//button[text()='Войти в аккаунт']");
     private By personalCabinetButton = By.xpath(".//p[text()='Личный Кабинет']");
     private By constructorButton = By.xpath(".//p[text()='Конструктор']");
     private By logo = By.className("AppHeader_header__logo__2D0X2");
-    private By bunsSection = By.xpath(".//span[text()='Булки']");
-    private By saucesSection = By.xpath(".//span[text()='Соусы']");
-    private By fillingsSection = By.xpath(".//span[text()='Начинки']");
-
-    public MainPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-    }
+    private By bunsSection = By.xpath("//div[span[text()='Булки']]");
+    private By saucesSection = By.xpath("//div[span[text()='Соусы']]");
+    private By fillingsSection = By.xpath("//div[span[text()='Начинки']]");
 
     public void clickLoginButton() {
         WebElement loginBtn = wait.until(ExpectedConditions.elementToBeClickable(loginButton));
@@ -62,16 +62,16 @@ public class MainPage {
 
     public boolean isBunsSectionActive() {
         WebElement buns = wait.until(ExpectedConditions.visibilityOfElementLocated(bunsSection));
-        return buns.getAttribute("class").contains("current");
+        return buns.getAttribute("class").contains("tab_tab_type_current__");
     }
 
     public boolean isSaucesSectionActive() {
         WebElement sauces = wait.until(ExpectedConditions.visibilityOfElementLocated(saucesSection));
-        return sauces.getAttribute("class").contains("current");
+        return sauces.getAttribute("class").contains("tab_tab_type_current__");
     }
 
     public boolean isFillingsSectionActive() {
         WebElement fillings = wait.until(ExpectedConditions.visibilityOfElementLocated(fillingsSection));
-        return fillings.getAttribute("class").contains("current");
+        return fillings.getAttribute("class").contains("tab_tab_type_current__");
     }
 }
